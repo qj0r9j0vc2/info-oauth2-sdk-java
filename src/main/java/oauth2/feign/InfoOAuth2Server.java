@@ -19,7 +19,8 @@ public interface InfoOAuth2Server {
 
     @RequestLine("POST /oauth2/token")
     @Headers("Content-Type: application/x-www-form-urlencoded")
-    TokenResponse refresh(@Param("grant_type") String grantType, @Param("scope") String scope, @Param("refresh_token") String refreshToken);
+    @Body("grant_type={grantType}&scope={scope}&redirect_uri={refreshToken}")
+    TokenResponse refresh(@Param("grantType") String grantType, @Param("scope") String scope, @Param("refreshToken") String refreshToken);
 
     @RequestLine("GET /resource/user")
     ResourceResponse getUser();

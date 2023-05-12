@@ -50,7 +50,7 @@ public class InfoOAuth2 {
                 .target(InfoOAuth2Server.class, SERVER_URL);
     }
 
-    public TokenResponse exchangeTokenWithoutPKCE(ExchangeTokenRequest request) {
+    public TokenResponse exchangeTokenWithoutPKCE(ExchangeTokenRequest request) throws InfoOAuth2Exception {
         try {
 
             TokenResponse tokenResponse = server.exchange(AUTH_CODE_GRANT_TYPE, request.getCode(), request.getRedirectUri());
@@ -62,7 +62,7 @@ public class InfoOAuth2 {
         }
     }
 
-    public void refreshToken(){
+    public void refreshToken() throws InfoOAuth2Exception {
         try {
         TokenResponse tokenResponse = server.refresh(REFRESH_TOKEN_GRANT_TYPE, "profile", this.refreshToken);
         this.accessToken = tokenResponse.getAccess_token();
@@ -72,7 +72,7 @@ public class InfoOAuth2 {
         }
     }
 
-    public ResourceResponse getUserResponse() {
+    public ResourceResponse getUserResponse() throws InfoOAuth2Exception {
          try {
         if (this.accessToken.isEmpty()) throw new InfoOAuth2Exception("AccessToken cannot found!");
         InfoOAuth2Server authorizedServer = Feign.builder()
