@@ -47,19 +47,28 @@ public class InfoOAuth2 {
     }
 
     public TokenResponse exchangeTokenWithoutPKCE(ExchangeTokenRequest request) {
-         TokenResponse tokenResponse = server.exchange(AUTH_CODE_GRANT_TYPE, request.getCode(), request.getRedirectUri());
-         this.accessToken = tokenResponse.getAccess_token();
-         this.refreshToken = tokenResponse.getRefresh_token();
-         return tokenResponse;
+        try {
+            TokenResponse tokenResponse = server.exchange(AUTH_CODE_GRANT_TYPE, request.getCode(), request.getRedirectUri());
+            this.accessToken = tokenResponse.getAccess_token();
+            this.refreshToken = tokenResponse.getRefresh_token();
+            return tokenResponse;
+        } catch (RuntimeException e) {
+            throw new InfoOAuth2Exception(e.getMessage());
+        }
     }
 
     public void refreshToken(){
+        try {
         TokenResponse tokenResponse = server.refresh(REFRESH_TOKEN_GRANT_TYPE, "profile", this.refreshToken);
         this.accessToken = tokenResponse.getAccess_token();
         this.refreshToken = tokenResponse.getRefresh_token();
+        } catch (RuntimeException e) {
+            throw new InfoOAuth2Exception(e.getMessage());
+        }
     }
 
     public ResourceResponse getUserResponse() {
+         try {
         if (this.accessToken.isEmpty()) throw new InfoOAuth2Exception("AccessToken cannot found!");
         InfoOAuth2Server authorizedServer = Feign.builder()
                 .decoder(jacksonDecoder)
@@ -67,6 +76,9 @@ public class InfoOAuth2 {
                 .requestInterceptor(new BearerAuthInterceptor(this.accessToken))
                 .target(InfoOAuth2Server.class, SERVER_URL);
         return authorizedServer.getUser();
+         } catch (RuntimeException e) {
+             throw new InfoOAuth2Exception(e.getMessage());
+         }
     }
 
 }
