@@ -14,7 +14,7 @@ import java.util.Map;
 public interface InfoOAuth2Server {
     @RequestLine("POST /oauth2/token")
     @Headers("Content-Type: application/x-www-form-urlencoded")
-    @Body("\"grant_type\": \"{grantType}\"&\"code\": \"{code}\"&\"redirect_uri\": \"{refreshToken}\"")
+    @Body("grant_type={grantType}&code={code}&redirect_uri={refreshToken}")
     TokenResponse exchange(@Param("grantType") String grantType, @Param("code") String code, @Param("refreshToken") String refreshToken);
 
     @RequestLine("POST /oauth2/token")
