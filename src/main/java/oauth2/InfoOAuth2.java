@@ -2,6 +2,7 @@ package oauth2;
 
 import feign.Feign;
 import feign.Param;
+import feign.form.spring.SpringFormEncoder;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import oauth2.dto.request.ExchangeTokenRequest;
@@ -44,7 +45,7 @@ public class InfoOAuth2 {
         this.jacksonEncoder = new JacksonEncoder();
         server = Feign.builder()
                 .decoder(jacksonDecoder)
-                .encoder(jacksonEncoder)
+                .encoder(new SpringFormEncoder())
                 .requestInterceptor(new BasicAuthInterceptor(CLIENT_ID, CLIENT_SECRET))
                 .target(InfoOAuth2Server.class, SERVER_URL);
     }
