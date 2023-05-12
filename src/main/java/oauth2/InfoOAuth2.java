@@ -1,7 +1,6 @@
 package oauth2;
 
 import feign.Feign;
-import feign.form.FormEncoder;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import oauth2.dto.request.ExchangeTokenRequest;
@@ -12,7 +11,6 @@ import oauth2.feign.BasicAuthInterceptor;
 import oauth2.feign.BearerAuthInterceptor;
 import oauth2.feign.InfoOAuth2Server;
 
-import java.util.*;
 
 public class InfoOAuth2 {
 
@@ -45,7 +43,7 @@ public class InfoOAuth2 {
 
         server = Feign.builder()
                 .decoder(jacksonDecoder)
-                .encoder(new FormEncoder(this.jacksonEncoder))
+                .encoder(this.jacksonEncoder)
                 .requestInterceptor(new BasicAuthInterceptor(CLIENT_ID, CLIENT_SECRET))
                 .target(InfoOAuth2Server.class, SERVER_URL);
     }

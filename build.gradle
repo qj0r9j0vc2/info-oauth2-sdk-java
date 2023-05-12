@@ -17,9 +17,6 @@ dependencies {
     // https://mvnrepository.com/artifact/io.github.openfeign/feign-core
     implementation group: 'io.github.openfeign', name: 'feign-core', version: '12.3'
     implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '12.3'
-// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.0.2'
-
 
 }
 
