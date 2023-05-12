@@ -2,7 +2,6 @@ package oauth2;
 
 import feign.Feign;
 import feign.form.FormEncoder;
-import feign.form.spring.SpringFormEncoder;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import oauth2.dto.request.ExchangeTokenRequest;
@@ -12,8 +11,6 @@ import oauth2.exception.InfoOAuth2Exception;
 import oauth2.feign.BasicAuthInterceptor;
 import oauth2.feign.BearerAuthInterceptor;
 import oauth2.feign.InfoOAuth2Server;
-import org.springframework.cloud.openfeign.support.HttpMessageConverterCustomizer;
-import org.springframework.cloud.openfeign.support.SpringEncoder;
 
 import java.util.*;
 
