@@ -1,6 +1,7 @@
 package oauth2;
 
 import feign.Feign;
+import feign.Param;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import oauth2.dto.request.ExchangeTokenRequest;
@@ -10,6 +11,9 @@ import oauth2.exception.InfoOAuth2Exception;
 import oauth2.feign.BasicAuthInterceptor;
 import oauth2.feign.BearerAuthInterceptor;
 import oauth2.feign.InfoOAuth2Server;
+
+import java.util.List;
+import java.util.Map;
 
 public class InfoOAuth2 {
 
@@ -48,7 +52,12 @@ public class InfoOAuth2 {
 
     public TokenResponse exchangeTokenWithoutPKCE(ExchangeTokenRequest request) {
         try {
-            TokenResponse tokenResponse = server.exchange(AUTH_CODE_GRANT_TYPE, request.getCode(), request.getRedirectUri());
+            TokenResponse tokenResponse = server.exchange(
+                    List.of(Map.of("grant_type", AUTH_CODE_GRANT_TYPE),
+                            Map.of("code", request.getCode()),
+                            Map.of("redirect_uri", request.getRedirectUri())
+                            )
+            );
             this.accessToken = tokenResponse.getAccess_token();
             this.refreshToken = tokenResponse.getRefresh_token();
             return tokenResponse;
