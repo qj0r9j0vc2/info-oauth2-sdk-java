@@ -52,12 +52,8 @@ public class InfoOAuth2 {
 
     public TokenResponse exchangeTokenWithoutPKCE(ExchangeTokenRequest request) {
         try {
-            Map<String, String> map = new HashMap();
-            map.put("grant_type", AUTH_CODE_GRANT_TYPE);
-            map.put("code", request.getCode());
-            map.put("redirect_uri", request.getRedirectUri());
 
-            TokenResponse tokenResponse = server.exchange(map);
+            TokenResponse tokenResponse = server.exchange(AUTH_CODE_GRANT_TYPE, request.getCode(), request.getRedirectUri());
             this.accessToken = tokenResponse.getAccess_token();
             this.refreshToken = tokenResponse.getRefresh_token();
             return tokenResponse;
