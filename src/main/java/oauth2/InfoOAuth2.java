@@ -12,8 +12,7 @@ import oauth2.feign.BasicAuthInterceptor;
 import oauth2.feign.BearerAuthInterceptor;
 import oauth2.feign.InfoOAuth2Server;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InfoOAuth2 {
 
@@ -52,12 +51,12 @@ public class InfoOAuth2 {
 
     public TokenResponse exchangeTokenWithoutPKCE(ExchangeTokenRequest request) {
         try {
-            TokenResponse tokenResponse = server.exchange(
-                    List.of(Map.of("grant_type", AUTH_CODE_GRANT_TYPE),
-                            Map.of("code", request.getCode()),
-                            Map.of("redirect_uri", request.getRedirectUri())
-                            )
-            );
+            Map<String, String> map = new HashMap();
+            map.put("grant_type", AUTH_CODE_GRANT_TYPE);
+            map.put("code", request.getCode());
+            map.put("redirect_uri", request.getRedirectUri());
+
+            TokenResponse tokenResponse = server.exchange(map);
             this.accessToken = tokenResponse.getAccess_token();
             this.refreshToken = tokenResponse.getRefresh_token();
             return tokenResponse;

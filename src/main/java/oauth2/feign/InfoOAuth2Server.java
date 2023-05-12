@@ -14,7 +14,7 @@ import java.util.Map;
 public interface InfoOAuth2Server {
     @RequestLine("POST /oauth2/token")
     @Headers("Content-Type: application/x-www-form-urlencoded")
-    TokenResponse exchange(List<Map<String, String>> mapList);
+    TokenResponse exchange(Map<String, String> map);
 
     @RequestLine("POST /oauth2/token")
     @Headers("Content-Type: application/x-www-form-urlencoded")
