@@ -1,7 +1,6 @@
 package oauth2;
 
 import feign.Feign;
-import feign.Param;
 import feign.form.spring.SpringFormEncoder;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
@@ -43,6 +42,7 @@ public class InfoOAuth2 {
         this.CLIENT_SECRET = clientSecret;
         this.jacksonDecoder = new JacksonDecoder();
         this.jacksonEncoder = new JacksonEncoder();
+        
         server = Feign.builder()
                 .decoder(jacksonDecoder)
                 .encoder(new SpringFormEncoder())
