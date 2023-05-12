@@ -2,6 +2,7 @@ package oauth2;
 
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 import oauth2.dto.request.ExchangeTokenRequest;
 import oauth2.dto.response.ResourceResponse;
 import oauth2.dto.response.TokenResponse;
@@ -22,6 +23,7 @@ public class InfoOAuth2 {
     private String refreshToken;
 
     private final JacksonDecoder jacksonDecoder;
+    private final JacksonEncoder jacksonEncoder;
     private final InfoOAuth2Server server;
 
     public String getAccessToken() {
@@ -36,8 +38,10 @@ public class InfoOAuth2 {
         this.CLIENT_ID = clientId;
         this.CLIENT_SECRET = clientSecret;
         this.jacksonDecoder = new JacksonDecoder();
+        this.jacksonEncoder = new JacksonEncoder();
         server = Feign.builder()
                 .decoder(jacksonDecoder)
+                .encoder(jacksonEncoder)
                 .requestInterceptor(new BasicAuthInterceptor(CLIENT_ID, CLIENT_SECRET))
                 .target(InfoOAuth2Server.class, SERVER_URL);
     }
@@ -59,6 +63,7 @@ public class InfoOAuth2 {
         if (this.accessToken.isEmpty()) throw new InfoOAuth2Exception("AccessToken cannot found!");
         InfoOAuth2Server authorizedServer = Feign.builder()
                 .decoder(jacksonDecoder)
+                .encoder(jacksonEncoder)
                 .requestInterceptor(new BearerAuthInterceptor(this.accessToken))
                 .target(InfoOAuth2Server.class, SERVER_URL);
         return authorizedServer.getUser();
